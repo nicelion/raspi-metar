@@ -25,6 +25,7 @@ def check_to_create_airports():
         
         print('[SUCCESS] Successfully created airports file.')
 
+        ap.close()
         get_command()
 
 def get_command():
@@ -39,17 +40,12 @@ def get_command():
         print('add at')
 
 def verify_airport_is_valid() -> str:
-    # try:
-    #     stat = Station.from_icao(ident)
-    # except exceptions.BadStation:
-    #     print("[ERR] %s is not a valid identifier!" % a)
-
     a = input("Enter ICAO ident (Kxxx): ")
 
     try:
         stat = Station.from_icao(a)
         print('Added %s' % stat.name)
-        return a
+        return a.upper()
     except exceptions.BadStation:
         print("[ERR] %s is not a valid identifier!" % a)
         verify_airport_is_valid()
@@ -60,6 +56,7 @@ def add_all():
 
     mod = []
     for airport in airports:
+        print('called')
         ap = verify_airport_is_valid()
         mod.append(ap)
 
@@ -69,7 +66,10 @@ def add_all():
 
     save = input('Are you ready to save to file?(y/n): ')
 
-    if save = 'y':
+    if save == 'y':
         print('save')
     else: 
         print('Canceling')
+
+def save_file(airports):
+    pass
