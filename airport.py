@@ -7,6 +7,8 @@ class Airport:
 
         self.station = Station.from_icao(ident)
 
+        self.led = LED(self.index, self.__get_metar(), self.station)
+
     def __get_metar(self):
         m = Metar(self.idnet)
         m.update()
@@ -16,15 +18,6 @@ class Airport:
         print("Setting LED %s to %s for %s" % (self.index, color, self.station.name))
 
     def update_airport(self):
-        current_metar = self.__get_metar().data
-
-        if current_metar.flight_rules == 'VFR':
-            self.set_led('GREEN')
-        elif current_metar.flight_rules == 'IFR':
-            self.set_led('RED')
-        elif current_metar.flight_rules == 'MVFR':
-            self.set_led('BLUE')
-        elif current_metar.flight_rule == 'LIFR':
-            self.set_led('MAGENTA')
+        self.led.update()
 
 
