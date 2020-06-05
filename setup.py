@@ -1,9 +1,13 @@
-import os.path
+import os
 from os import path
 from avwx import Metar, exceptions, Station
 from ColorIt import *
+from configparser import ConfigParser
+
+done_keywords = ["done", "finished", "exit", "quit", "save"]
 
 def start_wizard():
+    os.system("clear")
     print('Welcome to Setup Wizard')
 
     check_to_create_airports()
@@ -32,51 +36,59 @@ def get_command():
     comm = input("Enter a command to get started: ")
 
     if comm == 'help':
-        print('help')
+        os.system('cat helpfile')
+        get_command()
     elif comm == "add all":
         print('add all')
         add_all()
     elif comm == 'add at':
         print('add at')
-    elif comm == 'exit' or comm == 'end':
+    elif comm in done_keywords:
         print('Goodbye.')
     else: 
         print('[ERROR]: Invalid command. Please try again. Pass help for all commands')
         get_command()
 
-def verify_airport_is_valid() -> str:
-    a = input("Enter ICAO ident (Kxxx): ")
-
-    try:
-        stat = Station.from_icao(a)
-        print('Added %s' % stat.name)
-        return a.upper()
-    except exceptions.BadStation:
-        print("[ERR] %s is not a valid identifier!" % a)
-        verify_airport_is_valid()
+def verify_airport_is_valid() -> (str, str):
+    while True:
+    
+        a = input("    Enter ICAO ident (Kxxx): ")
+        if a in done_keywords:
+            return ('done', 'done')
+            break
+        try:
+            stat = Station.from_icao(a)
+            return (a.upper(), stat.name)
+            break
+        except exceptions.BadStation:
+            print("[ERR] %s is not a valid identifier!" % a)
+            # verify_airport_is_valid()
 
 def add_all():
-    airports_file = open('airports', 'r')
-    airports = airports_file.readlines()
+    print('Assign ICAO idents to LED position. For example, when asked you would pas \'KJFK\' and \'10\' if you wanted to assign John F. Kennedy International Airport to use LED 10.\nWhen finished, pass done')
+    
+    config = {}
+    while True:
 
-    mod = []
-    for airport in airports:
-        print('called')
-        ap = verify_airport_is_valid()
-        mod.append(ap)
+        airport = verify_airport_is_valid()
 
-    save = input('Are you ready to save to file?(y/n): ')
+        if airport[0] == 'done':
+            save_file(config)
+            break
+        else:
+            led = input("    LED position: ")
 
-    if save == 'y' or save == 'yes':
-        print('save')
-        save_file(mod)
-    else: 
-        print('Canceling')
+            config.update({led: airport[0]}) 
 
-def save_file(airports):
-    with open('airports', "w") as fhandle:
-        for airport in airports:
-            fhandle.write(f'{airport}\n')
+            print('[SUCCESS]: Assigned %s to LED at positon %s' % (airport[1], led))
+            
+
+def save_file(configuration):
+    config =  ConfigParser()
+    config['leds'] = configuration
+    
+    with open('test.conf', 'w') as configfile:
+        config.write(configfile)
     
     print("[SUCCESS]: Saved airports to file.")
 
