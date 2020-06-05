@@ -1,7 +1,13 @@
 # raspi-metar (WORK IN PROGRESS)
 
 Yet another python program to create a METAR map with your Raspberry Pi
-
+## Table of Contents
+- [About](#about)
+- [Things You'll Need](#things-youll-need)
+- [Setting Up Your Project](#seting-up-your-project)
+- [setup.py](#setuppy)
+	- [Assigning Airports to LEDs](#assigning-airports-to-leds)
+- [Glossary](#glossary)
 ## About
 In short, `raspi-metar` is a Raspberry Pi project that takes METAR data from various airports and displays it on a VFR sectional map using NEOPIXEL LEDs.
 
