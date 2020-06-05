@@ -2,5 +2,5 @@
 Yet another python program to create a METAR map with your Raspberry Pi
 
 ## Requirements
-python 3.x
+This project requires python 3.6 or above due to avwx requrements
 `pip install avwx`
