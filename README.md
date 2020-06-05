@@ -56,7 +56,7 @@ You will be asked for the ICAO identifier for the airport you want to add and th
 
   
 
-#### Example:
+####Example:
 
 Below is a terminal excerpt if you wantted to assign Greenville Spartanburg International Airport to LED 15:
 
@@ -83,3 +83,20 @@ Enter ICAO ident (Kxxx): done
 [SUCCESS]: Saved airports to file.
 
 ```
+
+## Glossary
+Here is that glossary I was talking about. You can find definitions and explanations about some of the vocabulary used in this project.
+
+#### ICAO
+The ICAO, or [International Civil Aviation Organization](https://en.wikipedia.org/wiki/International_Civil_Aviation_Organization), is a United Nations agency tasked with controlling and creating international aviation regulations and guidelines.
+
+#### METAR
+What the heck is METAR? That is a great question! METAR stands for METerological Aerodome Report. Essentially, it a weather report in a very specific format that pilots use. Most "towered" airports, meaning one with an Air Traffic Control tower, will issue these METAR reports every hour, or when conditions change enough to warrant.
+
+When a pilot decides they want to take off or land, it is crucial for them to get the latest METAR report so they can know what the runway conditions are going to be like. 
+
+##### So what does a METAR look like?
+Here is an example METAR report from a local airport:
+`KGMU 052153Z 22009KT 10SM SCT032 29/21 A2990 RMK AO2 LTG DSNT N SLP113 T02890211`
+
+Don't know whats going on? Yeah, I don't really either! If you want more info on METARs and how to read them, check out the [Wikipedia page](https://en.wikipedia.org/wiki/METAR)!
