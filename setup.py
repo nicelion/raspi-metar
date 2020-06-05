@@ -1,6 +1,5 @@
 from os import path, system
 from avwx import Metar, exceptions, Station
-from ColorIt import *
 from configparser import ConfigParser
 
 done_keywords = ["done", "finished", "exit", "quit", "save"]
@@ -10,21 +9,7 @@ def start_wizard():
     system('clear')
     print('Welcome to Setup Wizard')
 
-    check_to_create_airports()
-
-def check_to_create_airports():
-    # check if airports file exists
-
-    if path.exists('raspi-metar.conf'):
-        # conf file does exist
-        get_command()
-    else:
-        # file does not exist, so we will create one now.
-        print('[WARN] airports file was not found \nCreating one now!')
-        system('touch airports.conf')
-        
-        print('[SUCCESS] Successfully created airports.conf file.')
-        get_command()
+    get_command()
 
 def get_command():
     # get the input from user and decide what to do with it. If command does not exist, function gets called again
@@ -35,7 +20,6 @@ def get_command():
         system('cat helpfile')
         get_command()
     elif comm == "add all":
-        print('add all')
         add_all()
     elif comm == 'add at':
         print('add at')
@@ -62,7 +46,7 @@ def verify_airport_is_valid() -> (str, str):
             print("[ERR] %s is not a valid identifier!" % a)
 
 def add_all():
-    print('Assign ICAO idents to LED position. For example, when asked you would pas \'KJFK\' and \'10\' if you wanted to assign John F. Kennedy International Airport to use LED 10.\nWhen finished, pass done')
+    print('Assign ICAO idents to LED position. For example, when asked you would pas \'KJFK\' and \'10\' if you wanted to assign John F. Kennedy International Airport to use LED 10.\nWhen finished, pass done\n')
     
     config = {}
     while True:
@@ -82,9 +66,10 @@ def add_all():
 
 def save_file(configuration):
     config =  ConfigParser()
-    config['leds'] = configuration
+    config.read('raspi-metar.conf')
+    config['airports'] = configuration
     
-    with open('airports.conf', 'w') as configfile:
+    with open('raspi-metar.conf', 'w') as configfile:
         config.write(configfile)
     
     print("[SUCCESS]: Saved airports to file.")
