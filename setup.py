@@ -38,6 +38,11 @@ def get_command():
         add_all()
     elif comm == 'add at':
         print('add at')
+    elif comm == 'exit' or comm == 'end':
+        print('Goodbye.')
+    else: 
+        print('[ERROR]: Invalid command. Please try again. Pass help for all commands')
+        get_command()
 
 def verify_airport_is_valid() -> str:
     a = input("Enter ICAO ident (Kxxx): ")
@@ -60,16 +65,22 @@ def add_all():
         ap = verify_airport_is_valid()
         mod.append(ap)
 
-
-    
-    print(mod)
-
     save = input('Are you ready to save to file?(y/n): ')
 
-    if save == 'y':
+    if save == 'y' or save == 'yes':
         print('save')
+        save_file(mod)
     else: 
         print('Canceling')
 
 def save_file(airports):
-    pass
+    with open('airports', "w") as fhandle:
+        for airport in airports:
+            fhandle.write(f'{airport}\n')
+    
+    print("[SUCCESS]: Saved airports to file.")
+
+    get_command()
+
+
+start_wizard()
