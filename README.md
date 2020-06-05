@@ -48,11 +48,11 @@ There are a few python dependencies you need to install
 
 Once you have started `setup.py`, you will be asked to enter a command. To add airports all at once, type `add all`.
 
-You will be asked for the ICAO identifier for the airport you want to add and the LED position you want to assign it to.
+You will be asked for the [ICAO](#icao) identifier for the airport you want to add and the LED position you want to assign it to.
 
   
 
-**Note:** Becuase METAR information is availible for airports in countries other than the US, you *must* add the country code prefix to the ICAO ident. For example, Los Angeles International Airport is commonly referred to in the US as LAX. However, you must enter KLAX for the program to recognize it.
+**Note:** Becuase [METAR](#metar) information is availible for airports in countries other than the US, you *must* add the country code prefix to the [ICAO](#icao) ident. For example, Los Angeles International Airport is commonly referred to in the US as LAX. However, you must enter KLAX for the program to recognize it.
 
   
 
