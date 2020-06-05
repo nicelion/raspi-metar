@@ -17,7 +17,7 @@ You will be asked for the ICAO identifier for the airport you want to add and th
 
 **Note:** Becuase METAR information is availible for airports in countries other than the US, you *must* add the country code prefix to the ICAO ident. For example, Los Angeles International Airport is commonly referred to in the US as LAX. However, you must enter KLAX for the program to recognize it.
 
-#### Example:
+####Example:
 Below is a terminal excerpt if you wantted to assign Greenville Spartanburg International Airport to LED 15:
 
 ```
