@@ -62,7 +62,7 @@ You will be asked for the [ICAO](#icao) identifier for the airport you want to a
 
   
 
-####Example:
+#### Example:
 
 Below is a terminal excerpt if you wantted to assign Greenville Spartanburg International Airport to LED 15:
 
@@ -71,21 +71,14 @@ Below is a terminal excerpt if you wantted to assign Greenville Spartanburg Inte
 ```
 
 Welcome to Setup Wizard
-
 Enter a command to get started: add all
-
 Assign ICAO idents to LED position. For example, when asked you would pas 'KJFK' and '10' if you wanted to assign John F. Kennedy International Airport to use LED 10.
 
 When finished, pass done
-
-Enter ICAO ident (Kxxx): KGSP
-
-LED position: 15
-
+	Enter ICAO ident (Kxxx): KGSP
+	LED position: 15
 [SUCCESS]: Assigned Greenville Spartanburg International Airport to LED at positon 15
-
-Enter ICAO ident (Kxxx): done
-
+	Enter ICAO ident (Kxxx): done
 [SUCCESS]: Saved airports to file.
 
 ```
