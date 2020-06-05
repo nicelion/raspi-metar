@@ -1,5 +1,4 @@
-import os
-from os import path
+from os import path, system
 from avwx import Metar, exceptions, Station
 from ColorIt import *
 from configparser import ConfigParser
@@ -7,7 +6,8 @@ from configparser import ConfigParser
 done_keywords = ["done", "finished", "exit", "quit", "save"]
 
 def start_wizard():
-    os.system("clear")
+    # start the setup wizard
+    system('clear')
     print('Welcome to Setup Wizard')
 
     check_to_create_airports()
@@ -15,28 +15,24 @@ def start_wizard():
 def check_to_create_airports():
     # check if airports file exists
 
-    if path.exists('airports'):
+    if path.exists('raspi-metar.conf'):
+        # conf file does exist
         get_command()
     else:
+        # file does not exist, so we will create one now.
         print('[WARN] airports file was not found \nCreating one now!')
-        count = input("How many data points are you displaying: ")
-
-        ap = open('airports', 'x')
-
-        for x in range(1, int(count)):
-            ap.write('NULL\n')
-        ap.write('NULL')
+        system('touch airports.conf')
         
-        print('[SUCCESS] Successfully created airports file.')
-
-        ap.close()
+        print('[SUCCESS] Successfully created airports.conf file.')
         get_command()
 
 def get_command():
+    # get the input from user and decide what to do with it. If command does not exist, function gets called again
+    
     comm = input("Enter a command to get started: ")
 
     if comm == 'help':
-        os.system('cat helpfile')
+        system('cat helpfile')
         get_command()
     elif comm == "add all":
         print('add all')
@@ -50,6 +46,8 @@ def get_command():
         get_command()
 
 def verify_airport_is_valid() -> (str, str):
+    # verifies ICAO ident provided is a valid ident. If not, user will be asked to provide a valid one before going on.
+
     while True:
     
         a = input("    Enter ICAO ident (Kxxx): ")
@@ -62,7 +60,6 @@ def verify_airport_is_valid() -> (str, str):
             break
         except exceptions.BadStation:
             print("[ERR] %s is not a valid identifier!" % a)
-            # verify_airport_is_valid()
 
 def add_all():
     print('Assign ICAO idents to LED position. For example, when asked you would pas \'KJFK\' and \'10\' if you wanted to assign John F. Kennedy International Airport to use LED 10.\nWhen finished, pass done')
@@ -87,7 +84,7 @@ def save_file(configuration):
     config =  ConfigParser()
     config['leds'] = configuration
     
-    with open('test.conf', 'w') as configfile:
+    with open('airports.conf', 'w') as configfile:
         config.write(configfile)
     
     print("[SUCCESS]: Saved airports to file.")
