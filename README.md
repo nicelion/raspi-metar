@@ -32,7 +32,7 @@ You're gonna need a couple of things to complete this project. Do note, for this
 - A desire to learn
 ## Seting Up Your Project
 
-#### Dependenies
+### Dependenies
 
 There are a few python dependencies you need to install
 
@@ -44,11 +44,44 @@ There are a few python dependencies you need to install
 
   
 
-## setup.py
+### setup.py
 
 `setup.py` is a tool that automates project configuration. You will need to run this BEFORE you begin your project. Here you will be able to assign LEDs to specific airports, change colors, refresh rates, etc.
 
-  
+### Manual Configuration
+Inside the `raspi-metar` directory, you'll find a file named `raspi-metar.conf`. Use your favorite text editor to open it if you want to edit it manually.
+
+Below is an example of what the file looks like:
+```
+[settings]
+refresh_rate = 1800
+show_lightning = yes
+brightness = 10
+
+[colors]
+vfr = (0, 255, 0)
+ifr = (255, 0, 0)
+lifr = (255, 0, 255)
+mvfr = (0, 0, 255)
+
+[airports]
+1 = KCEU
+2 = KGMU
+3 = KSPA
+4 = KAND
+```
+  - SETTINGS
+	  - refresh_rate
+		  - A whole number greater than one which represents how often data will be updated in SECONDS.
+	- show_lightning
+		- yes/no if you want LEDs to flash when airport is reporting lighting in vicnity
+	- brightness
+		- A whole number 1-100 determining how bright you want your LEDs to shine
+- COLORS
+	- RGB values for the different flight conditions
+- AIRPORTS
+	- Set a whole number = to ICAO ident. The number represents LED index and obviously the ICAO index represents the airport its assigned to.
+	- These do not need to be in order, but must follow this convention.
 
 ### Assigning Airports to LEDs
 
@@ -62,7 +95,7 @@ You will be asked for the [ICAO](#icao) identifier for the airport you want to a
 
   
 
-#### Example:
+####Example:
 
 Below is a terminal excerpt if you wantted to assign Greenville Spartanburg International Airport to LED 15:
 
@@ -71,14 +104,21 @@ Below is a terminal excerpt if you wantted to assign Greenville Spartanburg Inte
 ```
 
 Welcome to Setup Wizard
+
 Enter a command to get started: add all
+
 Assign ICAO idents to LED position. For example, when asked you would pas 'KJFK' and '10' if you wanted to assign John F. Kennedy International Airport to use LED 10.
 
 When finished, pass done
-	Enter ICAO ident (Kxxx): KGSP
-	LED position: 15
+
+Enter ICAO ident (Kxxx): KGSP
+
+LED position: 15
+
 [SUCCESS]: Assigned Greenville Spartanburg International Airport to LED at positon 15
-	Enter ICAO ident (Kxxx): done
+
+Enter ICAO ident (Kxxx): done
+
 [SUCCESS]: Saved airports to file.
 
 ```
