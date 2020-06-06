@@ -7,7 +7,7 @@ class Airport:
 
         self.station = Station.from_icao(ident)
 
-        self.led = LED(self.index, self.__get_metar(), self.station)
+        self.metar = self.__get_metar()
 
     def __get_metar(self):
         m = Metar(self.idnet)
@@ -18,6 +18,22 @@ class Airport:
         print("Setting LED %s to %s for %s" % (self.index, color, self.station.name))
 
     def update_airport(self):
-        self.led.update()
+        self.set_led("RED")
+    
+    def get_flight_rules(self):
+        return self.metar.data.flight_rules.lower()
 
+    def is_lightning(self):
+
+        if 'ltg' in self.metar.data.remarks.lower():
+            return True
+        for code in self.metar.data.wx_codes:
+            if 'ts' in code.repr.lower() or 'ltg' in self.metar.data.remarks.lower():
+                return True
+        
+
+        return False
+
+    def get_station_info(self):
+        return self.station
 
