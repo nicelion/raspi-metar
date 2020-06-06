@@ -1,6 +1,6 @@
 import avwx
 from avwx import Metar
-# import setup
+import setup
 from airport import Airport
 import time
 from configparser import ConfigParser
@@ -35,8 +35,6 @@ while True:
         flight_rules = airport.get_flight_rules()
         lightning_status = airport.is_lightning()
 
-        print(flight_rules)
-
         if flight_rules == 'vfr':
             led_color = vfr_color
         elif flight_rules == 'mvfr':
@@ -46,6 +44,9 @@ while True:
         elif flight_rules == 'lifr':
             led_color = lifr_color
         
+        if lightning_status:
+            pass
+
         print('Setting %s to %s' % (airport.station.name, str(led_color)))
 
     
