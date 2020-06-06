@@ -1,0 +1,12 @@
+******* HELP *******
+
+raspi-metar
+version 0.0.1
+www.github.com/nicelion/raspi-metar
+Email me with questions! ianthompson@nicelion.com
+
+help    - prints out all of the commands (You are already here)
+add all - continuously add airports and leds
+add at  - add one airport to leds
+
+******* HELP *******
