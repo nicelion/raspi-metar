@@ -4,63 +4,50 @@ from avwx import Metar
 from airport import Airport
 import time
 from configparser import ConfigParser
-# try:
-#     kgsp = Metar("KSPn")
-# except avwx.exceptions.BadStation:
-#     print("there was an error")
-# setup.start_wizard()
-
-# kGSP = Metar("KGSP")
-# kGSP.update()
-# print(kGSP.data.raw)
-# print(kGSP.data.wx_codes)
-# print(kGSP.data.flight_rules)
-
-# if kGSP.data.wx_codes[0].repr == '+TSRA':
-#     print('Lightning!!')
-
-# kGSP = Airport('KGSP', 12)
-# kCEU = Airport('KCEU', 13)
-# kAND = Airport('KAND', 14)
-# kGMU = Airport('KGMU', 16)
-# kCHS = Airport('KCHS', 19)
-
-# airports = [kGSP, kCEU, kAND, kGMU, kCHS]
-
-# def update():
-#     print("Updating Airport Infromation")
-#     for a in airports:
-#         a.update_airport()
-
-
-# while True:
-#     update()
-#     time.sleep(10)
-        
-
-# setup.start_wizard()
-# airports = []
-# with open('airports', 'r') as ap_file:
-#     for line in ap_file:
-#         airports.extend([str(a) for a in line.split()])
-
-
-# ports = []
-# x = 1
-# for ap in airports:
-#     ports.append(Airport(ap, x))
-#     x += 1
-
-# for p in ports:
-#     p.update_airport()
 
 config =  ConfigParser()
 config.read('raspi-metar.conf')
-config['colors'] = {
-    "IFR": (255,212,122),
-    "LIFR": (122,122,122),
-    "VFR": (0, 255, 0)
-}
+config.sections()
 
-with open('raspi-metar.conf', 'w') as configfile:
-   config.write(configfile)
+### CONFIGURATION
+refresh_rate = config.getint('settings', 'refresh_rate')
+show_lightning = config.getboolean('settings', 'show_lightning')
+brightness = config.getint('settings', 'brightness')
+
+vfr_color = config['colors']['vfr']
+ifr_color = config['colors']['ifr']
+mvfr_color = config['colors']['mvfr']
+lifr_color = config['colors']['lifr']
+
+### END CONFIGURATION
+
+airports = []
+for led in config['airports']:
+    ident = config['airports'][led]
+
+    airports.append(Airport(ident, led))
+
+while True:
+    for airport in airports:
+
+        led_color = (0, 0, 0)
+        station = airport.get_station_info()
+        flight_rules = airport.get_flight_rules()
+        lightning_status = airport.is_lightning()
+
+        print(flight_rules)
+
+        if flight_rules == 'vfr':
+            led_color = vfr_color
+        elif flight_rules == 'mvfr':
+            led_color = mvfr_color
+        elif flight_rules == 'ifr':
+            led_color = ifr_color
+        elif flight_rules == 'lifr':
+            led_color = lifr_color
+        
+        print('Setting %s to %s' % (airport.station.name, str(led_color)))
+
+    
+    time.sleep(refresh_rate)
+
