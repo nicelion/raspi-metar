@@ -1,5 +1,5 @@
 from avwx import Metar, Station
-from LED import *
+
 class Airport:
     def __init__(self, ident, index):
         self.idnet = ident
