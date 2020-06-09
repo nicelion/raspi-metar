@@ -4,6 +4,7 @@ config =  ConfigParser()
 config.read('raspi-metar.conf')
 config.sections()
 
+airports = config['airports']
 refresh_rate = config.getint('settings', 'refresh_rate')
 show_lightning = config.getboolean('settings', 'show_lightning')
 brightness = config.getint('settings', 'brightness')
