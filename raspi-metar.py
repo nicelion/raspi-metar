@@ -2,12 +2,8 @@
 #
 # Created by Ian Thompson
 
-import avwx
-from avwx import Metar
-import setup
 from airport import Airport
-import time
-import settings
+import time, settings
 from support.exceptions import *
 
 
