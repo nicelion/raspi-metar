@@ -1,5 +1,6 @@
 from avwx import Metar, Station
 import settings
+from exceptions import *
 
 class Airport:
     def __init__(self, ident, index):
@@ -9,10 +10,19 @@ class Airport:
         self.station = Station.from_icao(ident)
 
         self.metar = self.__get_metar()
+
+        
     def __get_metar(self):
-        m = Metar(self.idnet)
-        m.update()
-        return m
+
+        try:
+            m = Metar(self.idnet)
+        except TimeoutError:
+            self.__get_metar()
+        else:
+            if m.update():
+                return m
+            else:
+                raise NoMETARInformationError('No METAR for %s found' % m.station.name)
     
     def get_led_color(self):
         flight_rules = self.metar.data.flight_rules
