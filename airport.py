@@ -1,6 +1,6 @@
 from avwx import Metar, Station
 import settings
-from exceptions import *
+from support.exceptions import *
 
 class Airport:
     def __init__(self, ident, index):

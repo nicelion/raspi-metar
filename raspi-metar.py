@@ -8,7 +8,7 @@ import setup
 from airport import Airport
 import time
 import settings
-from exceptions import *
+from support.exceptions import *
 
 
 airports = []
@@ -72,6 +72,6 @@ if __name__ == "__main__":
             update_information()
             set_leds()
             show_animations()
-            
+
     except KeyboardInterrupt:
         print("cleaning up")
