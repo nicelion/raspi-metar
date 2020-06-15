@@ -95,7 +95,7 @@ You will be asked for the [ICAO](#icao) identifier for the airport you want to a
 
   
 
-####Example:
+#### Example:
 
 Below is a terminal excerpt if you wantted to assign Greenville Spartanburg International Airport to LED 15:
 
