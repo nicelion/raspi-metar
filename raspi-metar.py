@@ -2,9 +2,11 @@
 #
 # Created by Ian Thompson
 
-from airport import Airport
-import time, settings
+from airport import Airport, AirportTester
+import time, settings, requests
 from support.exceptions import *
+import xml.etree.cElementTree as ET
+
 
 
 airports = []
@@ -14,18 +16,45 @@ def update_information():
 
     airports.clear()
 
-    for led in settings.airports:
-        try:
-            ident = settings.airports[led]
-            airports.append(Airport(ident, led))
-            print(led, ident)
-        except NoMETARInformationError as err:
-            print(err)
-    
+    # NOAA Weather Data URL
+    url2 = 'https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=2&mostRecentForEachStation=true&stationString=%s'
 
+    identifiers = []
+    for airport in settings.airports:
+        ident = settings.airports[airport]
+        
+        identifiers.append(ident)
+        airports.append(AirportTester(ident, airport))
+
+    query_stirng = ','.join(identifiers)
+    url2 = url2 % query_stirng
+    
+    dom = ET.fromstring(requests.get(url2).text)
+
+    metars = dom.findall('./data/METAR')
+
+    for m in metars:
+        metar = m.find("raw_text").text
+        station_id = m.find("station_id").text
+
+        for airport in airports:
+            if airport.get_station_info().icao == station_id:
+                airport.set_metar(metar)
+
+    for airport in airports:
+        print(airport.get_metar().data.raw)
+    # for led in settings.airports:
+    #     try:
+    #         ident = settings.airports[led]
+    #         airports.append(Airport(ident, led))
+    #         print(led, ident)
+    #     except NoMETARInformationError as err:
+    #         print(err)
+    
+animated_airports = []
 def set_leds():
     print('SETTING LEDS')
-
+    animated_airports.clear()
 
     for airport in airports:
         led_color = airport.get_led_color()
@@ -52,6 +81,8 @@ def show_animations():
 
         time.sleep(1)
         
+
+
         for airport in airports:
             if airport.is_lightning():
                 name = airport.get_station_info().name
