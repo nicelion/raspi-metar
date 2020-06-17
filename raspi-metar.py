@@ -4,7 +4,6 @@
 
 from airport import Airport, AirportTester
 import time, settings, requests
-from support.exceptions import *
 import xml.etree.cElementTree as ET
 from itertools import zip_longest
 
@@ -97,10 +96,9 @@ def show_animations():
     #     ap_index += 1
 
     #     count += 2
-    ap_index = 0
     ap_station_indexes = []
 
-    for a in airports:
+    for _ in airports:
         ap_station_indexes.append(0)
 
     animation_duration = settings.animation_duration / 2
@@ -109,23 +107,30 @@ def show_animations():
     count = 0
     while count < limit:
 
+        animated_airports = []
         for index, airport in enumerate(airports):
             weather_codes = airport.get_animation_color()
+            if len(weather_codes) > 0:
+                animated_airports.append(airport)
+                if len(weather_codes) - 1 >= 0:
+                    print(weather_codes[ap_station_indexes[index]], airport.get_station_info().name)
 
-            if len(weather_codes) - 1 >= 0:
-                print(weather_codes[ap_station_indexes[index]], airport.get_station_info().name)
+                    # print(ap_station_indexes[index])
 
-                # print(ap_station_indexes[index])
-
-                if len(weather_codes) - 1 > ap_station_indexes[index]:
-                    ap_station_indexes[index] += 1
-                else:
-                    ap_station_indexes[index] = 0
+                    if len(weather_codes) - 1 > ap_station_indexes[index]:
+                        ap_station_indexes[index] += 1
+                    else:
+                        ap_station_indexes[index] = 0
 
         time.sleep(animation_duration)
 
-        set_leds()
-        
+        for airport in animated_airports:
+            led_color = airport.get_led_color()
+            station = airport.get_station_info()
+            flight_rules = airport.get_flight_rules()
+
+            print('Setting %s to %s for %s conditions' % (station.name, str(led_color), flight_rules))
+
         time.sleep(animation_duration)
 
         count += 1

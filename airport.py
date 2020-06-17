@@ -36,10 +36,6 @@ class Airport:
         elif flight_rules == 'LIFR':
             return settings.lifr_color
 
-
-    def update_airport(self):
-        self.set_led("RED")
-    
     def get_flight_rules(self):
         return self.metar.data.flight_rules.lower()
 
