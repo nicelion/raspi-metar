@@ -127,10 +127,30 @@ class AirportTester:
         # if 'FC' in self.metar.data.raw
     def get_animation_color(self):
         wx = []
-        snow_codes = ["IC", "PL", "SG", "SN", ]
-        fog_codes = ["FG", "FU", "DS", "DU", "PO", "SS", "VA"]
+        snow_codes = ["IC ", "PL ", "SG ", "SN ", "DS "]
+        fog_codes = ["FG ", "FU ", "DS ", "DU ", "PO ", "SS ", "VA "]
 
-        return (settings.snow_color, settings.fog_color)
+        if self.is_lightning(): wx.append("LIGHTNING")
+
+        for f in fog_codes:
+            for c in self.metar.data.wx_codes:
+                if c.repr in fog_codes:
+                    wx.append("FOG")
+                    break
+            if f in self.metar.data.remarks: 
+                wx.append("FOG")
+                break
+        for s in snow_codes:
+            for c in self.metar.data.wx_codes:
+                if c.repr in snow_codes:
+                    wx.append("SNOW")
+                    break
+            if s in self.metar.data.remarks:
+                wx.append("SNOW")
+                break
+        
+        # return (settings.snow_color, settings.fog_color)
+        return wx
         # for c in snow_codes:
         #     if 
 
@@ -138,3 +158,8 @@ class AirportTester:
         # if self.is_lightning(): wx.append("ltg")
 
         # return wx
+if __name__ == "__main__":
+    
+    spa = AirportTester('KSPA', 1)
+    spa.set_metar('KSPA 170115Z AUTO 03007KT 10SM SCT012 BKN034 BKN042 15/12 A3017 RMK AO2')
+    print(spa.get_animation_color())
