@@ -126,23 +126,23 @@ class AirportTester:
         snow_codes = ["IC ", "PL ", "SG ", "SN ", "DS "]
         fog_codes = ["FG ", "FU ", "DS ", "DU ", "PO ", "SS ", "VA "]
 
-        if self.is_lightning(): wx.append("LIGHTNING")
+        if self.is_lightning(): wx.append((255,255,255))
 
         for f in fog_codes:
             for c in self.metar.data.wx_codes:
                 if c.repr in fog_codes:
-                    wx.append("FOG")
+                    wx.append((119,0,255))
                     break
             if f in self.metar.data.remarks: 
-                wx.append("FOG")
+                wx.append((119,0,255))
                 break
         for s in snow_codes:
             for c in self.metar.data.wx_codes:
                 if c.repr in snow_codes:
-                    wx.append("SNOW")
+                    wx.append((215,215,215))
                     break
             if s in self.metar.data.remarks:
-                wx.append("SNOW")
+                wx.append((215,215,215))
                 break
         
         # return (settings.snow_color, settings.fog_color)

@@ -6,7 +6,11 @@ from airport import Airport, AirportTester
 import time, settings, requests
 import xml.etree.cElementTree as ET
 from itertools import zip_longest
+import board
+import neopixel
+import re
 
+pixels = neopixel.NeoPixel(board.D18, 10, brightness=1, auto_write=False)
 
 airports = []
 
@@ -54,13 +58,17 @@ def set_leds():
     print('SETTING LEDS')
     # animated_airports.clear()
 
-    for airport in airports:
+    for index, airport in enumerate(airports):
         led_color = airport.get_led_color()
         station = airport.get_station_info()
         flight_rules = airport.get_flight_rules()
 
+        pixels[index] = tuple(int(v) for v in re.findall("[0-9]+", led_color))
+        # pixels[index] = (0, 255, 0) 
         print('Setting %s to %s for %s conditions' % (station.name, str(led_color), flight_rules))
-        
+
+
+    pixels.show() 
 
 
 
@@ -116,22 +124,17 @@ def show_animations():
                     print(weather_codes[ap_station_indexes[index]], airport.get_station_info().name)
 
                     # print(ap_station_indexes[index])
-
+                    # pixels[index] = tuple(int(v) for v in re.findall("[0-9]+", weather_codes[ap_station_indexes[index]]))
+                    pixels[index] = weather_codes[ap_station_indexes[index]]
                     if len(weather_codes) - 1 > ap_station_indexes[index]:
                         ap_station_indexes[index] += 1
                     else:
                         ap_station_indexes[index] = 0
-
+        pixels.show()
         time.sleep(animation_duration)
 
-        for airport in animated_airports:
-            led_color = airport.get_led_color()
-            station = airport.get_station_info()
-            flight_rules = airport.get_flight_rules()
-
-            print('Setting %s to %s for %s conditions' % (station.name, str(led_color), flight_rules))
-
-        time.sleep(animation_duration)
+        set_leds()
+        time.sleep(animation_duration * 3)
 
         count += 1
         # for airport in airports:
@@ -192,5 +195,8 @@ if __name__ == "__main__":
             show_animations()
 
             print("\nRESTARTING\n")
-    except KeyboardInterrupt:
+    finally:
         print("cleaning up")
+
+        pixels.fill((0,0,0))
+        pixels.show()
