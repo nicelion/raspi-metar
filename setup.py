@@ -9,6 +9,8 @@ led_index = 1
 config = {}
 
 def save_airports(configuration):
+    # save to config file
+
     config =  ConfigParser()
     config.read('raspi-metar.conf')
     config['airports'] = configuration
@@ -23,16 +25,15 @@ def save_airports(configuration):
     else:
         print("Ok. Not saving recent configuration")
 
-while play:
-
+while run:
     try:
         ident = input("ICAO identifier for LED #%s: " % led_index)
 
         try: 
-            m = Metar(ident.upper())
-            config.update({led_index: ident})
+            m = Metar(ident.upper())    # attempts to see if avwx recognizes ICAO code
+            config.update({led_index: ident.upper()})   # update dictionary with led index and uppercase identifier
             print('Assigning %s to LED #%s' % (m.station.name, led_index))
-            led_index += 1
+            led_index += 1  # increment led_index
         except:
             print('[ERROR] %s is not a valid ICAO identifier! Be sure to include county code!' % ident)
 
@@ -41,4 +42,4 @@ while play:
     except KeyboardInterrupt:
         print("Keyboard")
         save_airports(config)
-        play = False
+        run = False
