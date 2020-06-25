@@ -14,8 +14,8 @@ def save_airports(configuration):
     config =  ConfigParser()
     config.read('raspi-metar.conf')
     config['airports'] = configuration
-    
-    verify = input("Are you sure you want to save?(y/n) ")
+    config.set('settings', 'number_of_leds', str(led_index - 1))
+    verify = input("Are you sure you want to save? (y/n) ")
 
     if verify == 'yes' or verify.lower() == 'y':
         with open('raspi-metar.conf', 'w') as configfile:
