@@ -3,7 +3,7 @@ from avwx import Metar, exceptions, Station
 from configparser import ConfigParser
 
 print("raspi-metar Setup Wizard")
-play = True
+run = True
 
 led_index = 1
 config = {}
