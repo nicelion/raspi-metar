@@ -1,13 +1,7 @@
 # raspi-metar (WORK IN PROGRESS)
 
 Yet another python program to create a METAR map with your Raspberry Pi
-## Table of Contents
-- [About](#about)
-- [Things You'll Need](#things-youll-need)
-- [Setting Up Your Project](#seting-up-your-project)
-- [setup.py](#setuppy)
-	- [Assigning Airports to LEDs](#assigning-airports-to-leds)
-- [Glossary](#glossary)
+
 ## About
 In short, `raspi-metar` is a Raspberry Pi project that takes METAR data from various airports and displays it on a VFR sectional map using NEOPIXEL LEDs.
 
@@ -17,8 +11,11 @@ I hope that you find this project interesting. I hope it can be used as a tool t
 
 This project is not solely intended on you avgeeks, rather, anyone interested in computers, weather, or aviation. I feel like a lot of "beginner" Raspberry Pi projects tend to be weather tools that you'll never use or provide limited value or entertainment. This project is intended to be super beginner friendly and NOT limited to us avgeeks! Yes, you'll find a lot of aviation terms in this project, but think of it as a way to learn more about a new subject. Plus, I'll try to add a glossary at the end for some terms you may not know so if you see an unfamiliar word with a hyperlink, click on it!
 
+## How To
 
-## Things You'll Need
+Please see the wiki for all the details on the build! Currently, it is a work in progress.
+
+<!-- ## Things You'll Need
 You're gonna need a couple of things to complete this project. Do note, for this project, I have elected to follow the policy of "go big or go home" so I am using a VFR sectional map of the ENTIRE United States measuring 3.5x5ft! You can easily use a smaller map, or even use regional maps!
 
 - Raspberry Pi (any newish model should work)
@@ -138,4 +135,4 @@ When a pilot decides they want to take off or land, it is crucial for them to ge
 Here is an example METAR report from a local airport:
 `KGMU 052153Z 22009KT 10SM SCT032 29/21 A2990 RMK AO2 LTG DSNT N SLP113 T02890211`
 
-Don't know whats going on? Yeah, I don't really either! If you want more info on METARs and how to read them, check out the [Wikipedia page](https://en.wikipedia.org/wiki/METAR)!
+Don't know whats going on? Yeah, I don't really either! If you want more info on METARs and how to read them, check out the [Wikipedia page](https://en.wikipedia.org/wiki/METAR)! -->
