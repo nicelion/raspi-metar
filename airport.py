@@ -86,6 +86,6 @@ class Airport:
 
 if __name__ == "__main__":
     
-    spa = AirportTester('KSPA', 1)
+    spa = Airport('KSPA', 1)
     spa.set_metar('KSPA 170115Z AUTO 03007KT 10SM SCT012 BKN034 BKN042 15/12 A3017 RMK AO2')
     print(spa.get_animation_color())
