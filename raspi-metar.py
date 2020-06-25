@@ -2,7 +2,7 @@
 #
 # Created by Ian Thompson
 
-from airport import Airport, AirportTester
+from airport import Airport
 import time, settings, requests
 import xml.etree.cElementTree as ET
 from itertools import zip_longest
@@ -27,7 +27,7 @@ def update_information():
         ident = settings.airports[airport]
         
         identifiers.append(ident)
-        airports.append(AirportTester(ident, airport))
+        airports.append(Airport(ident, airport))
 
     query_stirng = ','.join(identifiers)
     url2 = url2 % query_stirng
@@ -44,19 +44,10 @@ def update_information():
             if airport.get_station_info().icao == station_id:
                 airport.set_metar(metar)
 
-    # for airport in airports:
-    #     print(airport.get_metar().data.raw)
-    # for led in settings.airports:
-    #     try:
-    #         ident = settings.airports[led]
-    #         airports.append(Airport(ident, led))
-    #         print(led, ident)
-    #     except NoMETARInformationError as err:
-    #         print(err)
+
     
 def set_leds():
     print('SETTING LEDS')
-    # animated_airports.clear()
 
     for index, airport in enumerate(airports):
         led_color = airport.get_led_color()
@@ -76,34 +67,6 @@ def set_leds():
 def show_animations():
     print('STARTING ANIMATIONS')
 
-    # i = 0
-    # for a in animated_airports:
-    #     l = len(a.get_animation_color())
-    #     animation = a.get_animation_color()
-        
-    #     print(a.get_station_info().name, animation[i])
-    # animate = True
-    # ap_index = 0
-    # wx_index = 0
-    # limit = settings.refresh_rate / 2
-    # count = 0
-    # while count < limit:
-    #     if ap_index == len(airports): 
-    #         ap_index = 0
-    #         wx_index += 1
-
-    #     airport = airports[ap_index]
-
-    #     print(airport.get_station_info().name)
-
-    #     if wx_index < len(airport.get_animation_color()):
-    #         print(airport.get_animation_color()[wx_index])
-
-
-    #     # print(len(airport.get_animation_color()))
-    #     ap_index += 1
-
-    #     count += 2
     ap_station_indexes = []
 
     for _ in airports:
@@ -137,53 +100,6 @@ def show_animations():
         time.sleep(animation_duration * 3)
 
         count += 1
-        # for airport in airports:
-        #     if wx_index < len(airport.get_animation_color()):
-        #         print(airport.get_animation_color()[wx_index], airport.get_station_info().name)
-        #     else:
-        #         continue 
-            # i += 1
-
-        # for airport in airports:
-        #     print(airport.get_led_color())
-        
-        # time.sleep(1)
-
-        # ap_index += 1
-        # wx_index += 1
-        
-        # if l == 0: continue
-
-        # if i > l:
-        #     print(a.get_station_info().name, animation[i])
-        
-        # i += 1
-
-
-
-        # for m in a.get_animation_color():
-        #     print(a.get_station_info().name, m)
-
-    # limit = settings.refresh_rate / 2
-    # count = 0
-    # while count < limit:
-    #     if settings.show_lightning:
-    #         for airport in airports:
-    #             if airport.is_lightning():
-    #                 name = airport.get_station_info().name
-    #                 print('setting %s to WHITE' % name)
-
-    #     time.sleep(1)
-        
-
-
-    #     for airport in airports:
-    #         if airport.is_lightning():
-    #             name = airport.get_station_info().name
-    #             print('setting %s to %s' % (name, airport.get_led_color()))
-    #     time.sleep(1)
-
-    #     count += 1
 
 if __name__ == "__main__":
 
