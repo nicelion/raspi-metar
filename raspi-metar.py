@@ -10,7 +10,7 @@ import board
 import neopixel
 import re
 
-pixels = neopixel.NeoPixel(board.D18, 10, brightness=1, auto_write=False)
+pixels = neopixel.NeoPixel(board.D18, 20, brightness=1, auto_write=False)
 
 airports = []
 
@@ -50,14 +50,16 @@ def set_leds():
     print('SETTING LEDS')
 
     for index, airport in enumerate(airports):
-        led_color = airport.get_led_color()
-        station = airport.get_station_info()
-        flight_rules = airport.get_flight_rules()
+        try:
+            led_color = airport.get_led_color()
+            station = airport.get_station_info()
+            flight_rules = airport.get_flight_rules()
 
-        pixels[index] = tuple(int(v) for v in re.findall("[0-9]+", led_color))
-        # pixels[index] = (0, 255, 0) 
-        print('Setting %s to %s for %s conditions' % (station.name, str(led_color), flight_rules))
-
+            pixels[index] = tuple(int(v) for v in re.findall("[0-9]+", led_color))
+            print('Setting %s to %s for %s conditions' % (station.name, str(led_color), flight_rules))
+        except:
+            print("No METAR found for %s!" % airport.get_station_info().name)
+            pixels[index] = (0, 0, 0)
 
     pixels.show() 
 
@@ -80,19 +82,24 @@ def show_animations():
 
         animated_airports = []
         for index, airport in enumerate(airports):
-            weather_codes = airport.get_animation_color()
-            if len(weather_codes) > 0:
-                animated_airports.append(airport)
-                if len(weather_codes) - 1 >= 0:
-                    print(weather_codes[ap_station_indexes[index]], airport.get_station_info().name)
+            try:
+                weather_codes = airport.get_animation_color()
+                if len(weather_codes) > 0:
+                    animated_airports.append(airport)
+                    if len(weather_codes) - 1 >= 0:
+                        print(weather_codes[ap_station_indexes[index]], airport.get_station_info().name)
 
-                    # print(ap_station_indexes[index])
-                    # pixels[index] = tuple(int(v) for v in re.findall("[0-9]+", weather_codes[ap_station_indexes[index]]))
-                    pixels[index] = weather_codes[ap_station_indexes[index]]
-                    if len(weather_codes) - 1 > ap_station_indexes[index]:
-                        ap_station_indexes[index] += 1
-                    else:
-                        ap_station_indexes[index] = 0
+                        # print(ap_station_indexes[index])
+                        # pixels[index] = tuple(int(v) for v in re.findall("[0-9]+", weather_codes[ap_station_indexes[index]]))
+                        pixels[index] = weather_codes[ap_station_indexes[index]]
+                        if len(weather_codes) - 1 > ap_station_indexes[index]:
+                            ap_station_indexes[index] += 1
+                        else:
+                            ap_station_indexes[index] = 0
+            except:
+                print("No METAR found for %s!" % airport.get_station_info().name)
+                pixels[index] = (0, 0, 0)
+
         pixels.show()
         time.sleep(animation_duration)
 
