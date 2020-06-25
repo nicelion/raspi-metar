@@ -10,7 +10,7 @@ import board
 import neopixel
 import re
 
-pixels = neopixel.NeoPixel(board.D18, 20, brightness=1, auto_write=False)
+pixels = neopixel.NeoPixel(board.D18, settings.number_of_leds, brightness=1, auto_write=False)
 
 airports = []
 
@@ -89,8 +89,6 @@ def show_animations():
                     if len(weather_codes) - 1 >= 0:
                         print(weather_codes[ap_station_indexes[index]], airport.get_station_info().name)
 
-                        # print(ap_station_indexes[index])
-                        # pixels[index] = tuple(int(v) for v in re.findall("[0-9]+", weather_codes[ap_station_indexes[index]]))
                         pixels[index] = weather_codes[ap_station_indexes[index]]
                         if len(weather_codes) - 1 > ap_station_indexes[index]:
                             ap_station_indexes[index] += 1

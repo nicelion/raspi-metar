@@ -7,4 +7,4 @@ ExecStart=sudo /usr/bin/python3 /path/to/raspi-metar.py
 Restart=always
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target 

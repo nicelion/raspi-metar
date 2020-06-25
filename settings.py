@@ -9,7 +9,7 @@ refresh_rate = config.getint('settings', 'refresh_rate')
 animation_duration = config.getint('settings', 'animation_duration')
 show_lightning = config.getboolean('settings', 'show_lightning')
 brightness = config.getint('settings', 'brightness')
-i2c_display_enabled = config.getboolean('settings', 'i2c_display_enabled')
+number_of_leds = config.getint('settings', 'number_of_leds')
 
 vfr_color = config['colors']['vfr']
 ifr_color = config['colors']['ifr']
