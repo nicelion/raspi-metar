@@ -36,7 +36,7 @@ while run:
             try: 
                 m = Metar(ident.upper())    # attempts to see if avwx recognizes ICAO code
                 config.update({led_index: ident.upper()})   # update dictionary with led index and uppercase identifier
-                print('Assigning %s to LED #%s' % (m.station.name, led_index))
+                print('Assigning %s in %s, %s to LED #%s' % (m.station.name, m.station.city, m.station.state, led_index,))
                 led_index += 1  # increment led_index
             except:
                 print('[ERROR] %s is not a valid ICAO identifier! Be sure to include county code!' % ident)
