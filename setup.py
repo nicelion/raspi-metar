@@ -7,7 +7,8 @@ from configparser import ConfigParser
 import json
 import settings
 
-print("Welcome to the raspi-metar Setup Wizard!")
+system('clear')
+print("Welcome to the raspi-metar Setup Wizard!\n")
 run = True
 
 led_index = 1
@@ -115,7 +116,7 @@ while run:
             except:
                 if len(code) < 4:
                     # user did not provide a country code
-                    print('[ERROR] %s is not a valid ICAO identifier! Be sure to include county code!' % code)
+                    print('[ERROR] %s is not a valid ICAO identifier! Identifiers must be 3 to 4 characters in length' % code)
                     continue
                 
                 suggest_airports(led_index, code)
