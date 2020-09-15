@@ -5,6 +5,7 @@ from os import path, system
 from avwx import Metar, exceptions, Station
 from configparser import ConfigParser
 import json
+import settings
 
 print("raspi-metar Setup Wizard")
 run = True
@@ -101,22 +102,23 @@ def suggest_airports(led_index, wrong_ident):
 while run:
     try:
         ident = input("ICAO identifier for LED #%s: " % led_index)
+        code = settings.default_country_code + ident
 
         if ident == "":
             print("Skipping LED #%s" % led_index)
             led_index += 1
         else: 
             try: 
-                m = Metar(ident.upper())    # attempts to see if avwx recognizes ICAO code
-                config.update({led_index: ident.upper()})   # update dictionary with led index and uppercase identifier
+                m = Metar(code.upper())    # attempts to see if avwx recognizes ICAO code
+                config.update({led_index: code.upper()})   # update dictionary with led index and uppercase identifier
                 print('Assigning %s in %s, %s to LED #%s' % (m.station.name, m.station.city, m.station.state, led_index))
             except:
-                if len(ident) < 4:
+                if len(code) < 4:
                     # user did not provide a country code
-                    print('[ERROR] %s is not a valid ICAO identifier! Be sure to include county code!' % ident)
+                    print('[ERROR] %s is not a valid ICAO identifier! Be sure to include county code!' % code)
                     continue
                 
-                suggest_airports(led_index, ident)
+                suggest_airports(led_index, code)
         
         led_index += 1  # increment led_index
 

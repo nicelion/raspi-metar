@@ -5,6 +5,7 @@ config.read('raspi-metar.conf')
 config.sections()
 
 airports = config['airports']
+default_country_code = config['settings']["default_country_code"]
 refresh_rate = config.getint('settings', 'refresh_rate')
 animation_duration = config.getint('settings', 'animation_duration')
 show_lightning = config.getboolean('settings', 'show_lightning')
