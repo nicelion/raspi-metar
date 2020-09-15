@@ -1,10 +1,10 @@
 # setup.py
 # raspi-metar
 
-
 from os import path, system
 from avwx import Metar, exceptions, Station
 from configparser import ConfigParser
+
 
 print("raspi-metar Setup Wizard")
 run = True
@@ -29,6 +29,13 @@ def save_airports(configuration):
     else:
         print("Ok. Not saving recent configuration")
 
+def suggest_airports(wrong_ident):
+    print("Could not identift airport! Select an option below")
+    
+
+    for letter in wrong_ident[1:]:
+        print(letter)
+
 while run:
     try:
         ident = input("ICAO identifier for LED #%s: " % led_index)
@@ -43,7 +50,11 @@ while run:
                 print('Assigning %s in %s, %s to LED #%s' % (m.station.name, m.station.city, m.station.state, led_index,))
                 led_index += 1  # increment led_index
             except:
-                print('[ERROR] %s is not a valid ICAO identifier! Be sure to include county code!' % ident)
+                if len(ident) < 4:
+                    print('[ERROR] %s is not a valid ICAO identifier! Be sure to include county code!' % ident)
+                    continue
+                
+                suggest_airports(ident)
 
 
 
