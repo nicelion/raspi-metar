@@ -1,3 +1,7 @@
+# setup.py
+# raspi-metar
+
+
 from os import path, system
 from avwx import Metar, exceptions, Station
 from configparser import ConfigParser
