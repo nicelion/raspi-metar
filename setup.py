@@ -7,7 +7,7 @@ from configparser import ConfigParser
 import json
 import settings
 
-print("raspi-metar Setup Wizard")
+print("Welcome to the raspi-metar Setup Wizard!")
 run = True
 
 led_index = 1
