@@ -11,14 +11,12 @@ system('clear')
 print("Welcome to the raspi-metar Setup Wizard!\n")
 run = True
 
+global led_index
 led_index = 1
 config = {}
 
 with open('support/letter-suggestions.json') as f:
   data = json.load(f)
-
-
-
 
 
 def save_airports(configuration):
@@ -42,22 +40,26 @@ def save_airports(configuration):
 def get_suggestion_index(length):
     
     try:
-        u = input("Enter selection. Pass '' to skip: ")
+        u = input("Enter selection. Pass 'skip' or 'again' to skip or try again, repectivly: ")
         
-        if u != "":
+        if u == "skip":
+            return "skip"
+        elif u == "again":
+            return "again"
+        else:
             if int(u) <= length and int(u) >= 0:
                 return int(u)
             else:
-                print("Value is in valid. Please select a number 0-%i" % (length - 1))
+                print("[ERROR]: Value is in valid. Please select a number 0-%i" % (length - 1))
                 get_suggestion_index(length)
-        else:
-            return "skip"
+
 
     except ValueError:
         print("ERROR: Input is not a valid number")
         get_suggestion_index(length)
 
-def suggest_airports(led_index, wrong_ident):
+def suggest_airports(led_ind, wrong_ident):
+    global led_index
     print("[ERROR] %s is not a valid ICAO identifier!" % wrong_ident)
 
     possible_airports = []
@@ -87,22 +89,29 @@ def suggest_airports(led_index, wrong_ident):
         print("%i. %s | %s in %s, %s" % (index, airport.icao, airport.station.name, airport.station.city, airport.station.state))
         index += 1
 
-    selected_ap = possible_airports[get_suggestion_index(len(possible_airports))]
+    suggestion = get_suggestion_index(len(possible_airports))
 
-    
-    if index != "skip":
-        confirm = input("Are you sure you want to assign LED %i to %s in %s, %s? (y/n): " % (led_index, selected_ap.station.name, selected_ap.station.city, selected_ap.station.state))
+    if suggestion == "again":
+        pass
+    elif suggestion == "skip":
+        if input("Are you sure you want to skip? ") == "y":
+            print("Skiping LED #%s" % led_ind)
+            led_index += 1  # increment led_index
+        else:
+            suggest_airports(led_ind, wrong_ident)
+    elif suggestion != "skip":
+        selected_ap = possible_airports[suggestion]
+
+        confirm = input("Are you sure you want to assign LED %i to %s in %s, %s? (y/n): " % (led_ind, selected_ap.station.name, selected_ap.station.city, selected_ap.station.state))
 
         if confirm.lower() == "y":
-            config.update({led_index: selected_ap.icao.upper()})
-            print('Assigning %s in %s, %s to LED #%s' % (selected_ap.station.name, selected_ap.station.city, selected_ap.station.state, led_index))
+            config.update({led_ind: selected_ap.icao.upper()})
+            print('Assigning %s in %s, %s to LED #%s' % (selected_ap.station.name, selected_ap.station.city, selected_ap.station.state, led_ind))
+            led_index += 1
         else:
-            suggest_airports(led_index, wrong_ident)
-    else: 
-        if input("Are you sure you want to skip? ") == "y":
-            print("Skiping LED #%s" % led_index)
-        else:
-            suggest_airports(led_index, wrong_ident)
+            suggest_airports(led_ind, wrong_ident)
+
+
 
 
     
@@ -122,6 +131,7 @@ while run:
                 m = Metar(code.upper())    # attempts to see if avwx recognizes ICAO code
                 config.update({led_index: code.upper()})   # update dictionary with led index and uppercase identifier
                 print('Assigning %s in %s, %s to LED #%s' % (m.station.name, m.station.city, m.station.state, led_index))
+                led_index += 1  # increment led_index
             except:
                 if len(code) < 4:
                     # user did not provide a country code
@@ -130,7 +140,6 @@ while run:
                 
                 suggest_airports(led_index, code)
         
-        led_index += 1  # increment led_index
 
 
 
