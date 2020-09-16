@@ -100,7 +100,7 @@ def suggest_airports(led_ind, wrong_ident):
     if suggestion == "again":
         pass
     elif suggestion == "skip":
-        if input(warn + "Are you sure you want to skip? ") == "y":
+        if input(warn + "Are you sure you want to skip (y/n): ") in ["", "y", "yes"]:
             print("Skiping LED #%s" % led_ind)
             led_index += 1  # increment led_index
         else:
@@ -110,7 +110,7 @@ def suggest_airports(led_ind, wrong_ident):
 
         confirm = input(warn + "Are you sure you want to assign LED %i to %s in %s, %s? (y/n): " % (led_ind, selected_ap.station.name, selected_ap.station.city, selected_ap.station.state))
 
-        if confirm.lower() == "y":
+        if confirm.lower() in ["", "y", "yes"]:
             config.update({led_ind: selected_ap.icao.upper()})
             print(success + 'Assigning %s in %s, %s to LED #%s' % (selected_ap.station.name, selected_ap.station.city, selected_ap.station.state, led_ind))
             led_index += 1
@@ -130,8 +130,9 @@ while run:
         code = settings.default_country_code + ident
 
         if ident == "":
-            print("Skipping LED #%s" % led_index)
-            led_index += 1
+            if input(warn + "Are you sure you want to skip (y/n): ") in ["", "y", "yes"]:
+                print("Skipping LED #%s" % led_index)
+                led_index += 1
         else: 
             try: 
                 m = Metar(code.upper())    # attempts to see if avwx recognizes ICAO code
