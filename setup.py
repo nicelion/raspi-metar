@@ -46,10 +46,12 @@ def get_suggestion_index(length):
         
         if u != "":
             if int(u) <= length and int(u) >= 0:
-                return u
+                return int(u)
             else:
                 print("Value is in valid. Please select a number 0-%i" % (length - 1))
                 get_suggestion_index(length)
+        else:
+            return "skip"
 
     except ValueError:
         print("ERROR: Input is not a valid number")
@@ -85,15 +87,22 @@ def suggest_airports(led_index, wrong_ident):
         print("%i. %s | %s in %s, %s" % (index, airport.icao, airport.station.name, airport.station.city, airport.station.state))
         index += 1
 
-    index = get_suggestion_index(len(possible_airports))
+    selected_ap = possible_airports[get_suggestion_index(len(possible_airports))]
 
-    confirm = input("Are you sure you want to assign LED %i to %s in %s, %s? (y/n): " % (led_index, airport.station.name, airport.station.city, airport.station.state))
+    
+    if index != "skip":
+        confirm = input("Are you sure you want to assign LED %i to %s in %s, %s? (y/n): " % (led_index, selected_ap.station.name, selected_ap.station.city, selected_ap.station.state))
 
-    if confirm.lower() == "y":
-        config.update({led_index: airport.icao.upper()})
-        print('Assigning %s in %s, %s to LED #%s' % (airport.station.name, airport.station.city, airport.station.state, led_index))
-    else:
-        suggest_airports(led_index, wrong_ident)
+        if confirm.lower() == "y":
+            config.update({led_index: selected_ap.icao.upper()})
+            print('Assigning %s in %s, %s to LED #%s' % (selected_ap.station.name, selected_ap.station.city, selected_ap.station.state, led_index))
+        else:
+            suggest_airports(led_index, wrong_ident)
+    else: 
+        if input("Are you sure you want to skip? ") == "y":
+            print("Skiping LED #%s" % led_index)
+        else:
+            suggest_airports(led_index, wrong_ident)
 
 
     
