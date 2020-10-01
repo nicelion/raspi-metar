@@ -140,7 +140,7 @@ while run:
         ident = input("\nICAO identifier for LED #%s: " % led_index)
         code = settings.default_country_code + ident
 
-        elif ident == "":
+        if ident == "":
             if input(warn + "Are you sure you want to skip (y/n): ") in ["", "y", "yes"]:
                 print("Skipping LED #%s" % led_index)
                 led_index += 1
