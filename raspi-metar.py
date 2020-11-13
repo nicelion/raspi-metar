@@ -10,7 +10,7 @@ import board
 import neopixel
 import re
 
-pixels = neopixel.NeoPixel(board.D18, settings.number_of_leds, brightness=1, auto_write=False)
+pixels = neopixel.NeoPixel(board.D18, settings.number_of_leds, brightness=0.1, auto_write=False)
 
 airports = []
 

@@ -11,7 +11,7 @@ class Airport:
         
     def set_metar(self, raw_metar):
         self.metar = Metar(self.idnet)
-        self.metar.update(raw_metar)
+        self.metar.parse(raw_metar)
 
     
     def get_metar(self):
