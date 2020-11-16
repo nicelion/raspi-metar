@@ -14,6 +14,32 @@ pixels = neopixel.NeoPixel(board.D18, settings.number_of_leds, brightness=.05, a
 
 airports = []
 
+green = (255, 0, 0)
+red = (0, 255, 0)
+blue = (0, 0, 255)
+off = (0, 0, 0)
+
+def animation():
+
+    pixels.fill(red)
+    pixels.show()
+
+    time.sleep(0.1)
+
+    pixels.fill(blue)
+    pixels.show()
+    
+    time.sleep(0.1)
+
+    pixels.fill(green)
+    pixels.show()
+    
+    time.sleep(0.1)
+
+    pixels.fill(off)
+    pixels.show()
+
+
 def update_information():
     print('UPDATING METAR INFORMATION')
 
@@ -107,6 +133,8 @@ def show_animations():
         count += 1
 
 if __name__ == "__main__":
+
+    animation()
 
     try:
         while True:
