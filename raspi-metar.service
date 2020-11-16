@@ -3,8 +3,11 @@ Description=Yet another python program to create a METAR map with your Raspberry
 After=network.target
 
 [Service]
-ExecStart=sudo /usr/bin/python3 /path/to/raspi-metar.py
-Restart=always
+ExecStart=sudo /usr/bin/python3 /home/pi/Documents/raspi-metar/raspi-metar.py
+ExecStop=sudo /usr/bin/python3 /home/pi/Documents/raspi-metar/support/shutdown.py
+Restart=on-failure
+RestartSec=3
+WorkingDirectory=/home/pi/Documents/raspi-metar/
 
 [Install]
-WantedBy=multi-user.target 
+WantedBy=multi-user.target
