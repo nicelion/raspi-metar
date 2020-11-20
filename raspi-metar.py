@@ -46,7 +46,7 @@ def update_information():
     airports.clear()
 
     # NOAA Weather Data URL
-    url2 = 'https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=2&mostRecentForEachStation=true&stationString=%s'
+    url2 = 'https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=5&mostRecentForEachStation=true&stationString=%s'
 
     identifiers = []
     for airport in settings.airports:
@@ -63,12 +63,20 @@ def update_information():
     metars = dom.findall('./data/METAR')
 
     for m in metars:
-        metar = m.find("raw_text").text
-        station_id = m.find("station_id").text
+        raw_metar = m.find('raw_text').text
+        station_identifier = m.find("station_id").text
 
         for airport in airports:
-            if airport.get_station_info().icao == station_id:
-                airport.set_metar(metar)
+            if airport.get_station_info().icao == station_identifier:
+                airport.set_metar(raw_metar)
+
+    # for m in metars:
+    #     metar = m.find("raw_text").text
+    #     station_id = m.find("station_id").text
+
+    #     for airport in airports:
+    #         if airport.get_station_info().icao == station_id:
+    #             airport.set_metar(metar)
 
 
     
@@ -84,7 +92,7 @@ def set_leds():
             pixels[index] = tuple(int(v) for v in re.findall("[0-9]+", led_color))
             print('Setting %s to %s for %s conditions' % (station.name, str(led_color), flight_rules))
         except:
-            print("No METAR found for %s!" % airport.get_station_info().name)
+            print("No METAR found for %s! (%s)" % (airport.get_station_info().name, airport.get_station_info().icao))
             pixels[index] = (0, 0, 0)
 
     pixels.show() 
@@ -121,7 +129,7 @@ def show_animations():
                         else:
                             ap_station_indexes[index] = 0
             except:
-                print("No METAR found for %s!" % airport.get_station_info().name)
+                print("No METAR found for %s! (%s)" % (airport.get_station_info().name, airport.get_station_info().icao))
                 pixels[index] = (0, 0, 0)
 
         pixels.show()
@@ -135,6 +143,7 @@ def show_animations():
 if __name__ == "__main__":
 
     animation()
+
 
     try:
         while True:
