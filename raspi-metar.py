@@ -46,7 +46,7 @@ def update_information():
     airports.clear()
 
     # NOAA Weather Data URL
-    url2 = 'https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=5&mostRecentForEachStation=true&stationString=%s'
+    url2 = 'https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=24&mostRecentForEachStation=true&stationString=%s'
 
     identifiers = []
     for airport in settings.airports:
